@@ -4,21 +4,21 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-16%20(Turbopack)-black.svg?logo=next.js&logoColor=white)](https://nextjs.org)
 [![LiveKit](https://img.shields.io/badge/LiveKit-WebRTC%20Cloud-ff5900.svg?logo=webrtc&logoColor=white)](https://livekit.io)
-[![Whisper](https://img.shields.io/badge/ASR-Faster--Whisper%20GPU-green.svg)](https://github.com/SYSTRAN/faster-whisper)
+[![Whisper](https://img.shields.io/badge/STT-Dual%20Mode%3A%20Local%20Setup%20%2B%20Groq%20STT-green.svg)](https://github.com/SYSTRAN/faster-whisper)
 [![Groq](https://img.shields.io/badge/LLM-Groq%20Llama%20%26%20Compound-orange.svg)](https://groq.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**MeetAI** is a modern, enterprise-ready meeting platform that pairs real-time WebRTC video conferencing with an automated **AI Meeting Intelligence Engine**. It transcribes recorded audio via GPU Whisper, identifies conversation participants via conversational diarization, synthesizes detailed executive summaries, extracts key decisions and action items, and features an interactive AI Copilot with audio timestamp citations.
+**MeetAI** is a modern, enterprise-ready meeting platform that pairs real-time WebRTC video conferencing with an automated **AI Meeting Intelligence Engine**. It transcribes recorded audio via **Dual Mode: Local Setup + Groq STT**, identifies conversation participants via conversational diarization, synthesizes detailed executive summaries, extracts key decisions and action items, and features an interactive AI Copilot with audio timestamp citations.
 
 ---
 
 ## 🌟 Key Features
 
-### 1. 🎙️ GPU Whisper Speech-to-Text with VAD & Deduplication
-- High-speed local transcription using **Faster-Whisper** with CUDA acceleration (and CPU fallback).
+### 1. 🎙️ Dual Mode Speech-to-Text: Local Setup + Groq STT (with VAD & Deduplication)
+- Speech transcription with **Dual Mode: Local Setup + Groq STT** (Faster-Whisper / OpenAI Whisper for offline processing and Groq Whisper API for ultra-fast cloud STT).
 - **Voice Activity Detection (VAD)** filtering and hallucination loop prevention to eliminate empty repetitive speech tokens.
-- Automatic cloud fallback to **Groq Whisper API** (`whisper-large-v3-turbo`) for sub-second transcription.
+- Automatic fallback between local speech engines and **Groq Whisper API** (`whisper-large-v3-turbo`).
 
 ### 2. 🧠 AI Speaker Diarization & Participant Identification
 - Reconstructs the full conversation into clean, natural speaker dialogue turns.
@@ -65,14 +65,14 @@
                ▼                               ▼                               ▼
      ┌──────────────────┐             ┌──────────────────┐            ┌──────────────────┐
      │  FastAPI Backend │             │  LiveKit Cloud   │            │ Background Task  │
-     │  (Python 3.12)   │             │   (WebRTC SFU)   │            │ (Whisper + LLM)  │
+     │  (Python 3.12)   │             │   (WebRTC SFU)   │            │ (Dual Mode STT)  │
      └─────────┬────────┘             └──────────────────┘            └────────┬─────────┘
                │                                                               │
       ┌────────┴────────┐                                             ┌────────┴────────┐
       ▼                 ▼                                             ▼                 ▼
  ┌──────────┐     ┌───────────┐                                 ┌──────────┐     ┌───────────┐
- │PostgreSQL│     │  Redis 7  │                                 │ Faster-  │     │   Groq    │
- │ (Async)  │     │(Sessions) │                                 │ Whisper  │     │ LLM Engine│
+ │PostgreSQL│     │  Redis 7  │                                 │Local STT │     │   Groq    │
+ │ (Async)  │     │(Sessions) │                                 │(Whisper) │     │ LLM Engine│
  └──────────┘     └───────────┘                                 └──────────┘     └───────────┘
 ```
 
@@ -85,7 +85,7 @@
 | **Frontend** | Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS, Axios |
 | **Video & Real-Time** | LiveKit Cloud WebRTC SFU, `@livekit/components-react`, WebSocket Chat |
 | **Backend API** | FastAPI (Python 3.12), SQLAlchemy 2.0 (Async), Alembic, Pydantic v2, Structlog |
-| **Speech Recognition (ASR)** | Faster-Whisper (CTranslate2 CUDA/CPU), OpenAI-Whisper, Groq Whisper API |
+| **Speech Recognition (STT)** | **Dual Mode: Local Setup + Groq STT** (Faster-Whisper, OpenAI-Whisper, Groq Whisper API) |
 | **LLM & Intelligence** | Groq Cloud API (`openai/gpt-oss-120b`, `qwen/qwen3.6-27b`, `groq/compound`), Local GGUF LLM |
 | **Database & Cache** | PostgreSQL 16 (asyncpg), Redis 7 |
 | **Testing** | Pytest (asyncio), Next.js Type Check & Production Bundle Verification |
